@@ -1,0 +1,12 @@
+2-way Sweep Strategy in Map - 2 
+with random obstacle movement
+grid size   : 500 x 500
+obstacles   : 2000
+hiders      : 2500
+===============================
+Round no : 1 Game Steps req : 4814
+Round no : 2 Game Steps req : 4565
+Round no : 3 Game Steps req : 4676
+Round no : 4 Game Steps req : 4521
+Round no : 5 Game Steps req : 8226
+Round no : 6 Game Steps req : 3891

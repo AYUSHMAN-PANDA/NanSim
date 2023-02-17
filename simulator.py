@@ -20,8 +20,8 @@ from hider_movement import *
 # Strategy : 
 # 2 for 2way sweep
 # 4 for 4way sweep
-# Strategy = 2
-Strategy = 4
+Strategy = 2
+# Strategy = 4
 
 
 Obstacle_movement = 1
@@ -40,8 +40,8 @@ top_status_bar_height = 30
 bottom_status_bar_height = 30 
 
 # screen width and height
-grid_width = 650
-grid_height = 650
+grid_width = 100
+grid_height = 100
 grid_margin = 50
 
 
@@ -79,7 +79,7 @@ strategic_point_color = lemon
 # number of obstacles and seekers
 num_obstacles = 500
 num_seekers = 100
-num_hiders = 2000
+num_hiders = 300
 
 # initialize hider dots
 hider_dots = []
@@ -127,7 +127,7 @@ status_bar_bottom.fill((74, 124, 181))
 
 # Create a surface for the right status bar
 right_status_bar_margin = 10
-status_bar_right = pygame.Surface((screen_width - grid_width*1.2, screen_height-bottom_status_bar_height-top_status_bar_height-right_status_bar_margin))
+status_bar_right = pygame.Surface((screen_width - (grid_width + grid_margin ), screen_height-bottom_status_bar_height-top_status_bar_height-right_status_bar_margin))
 status_bar_right.fill((126, 172, 224))
 
 
@@ -150,10 +150,25 @@ print(len(all_seekers_pos_4))
 # game loop
 running = True
 pause = 0
-step = 1
+step = 0
+game_no = 0
+display = 0
 while running:
     if(len(hider_dots) == 0):
+        display = 1
+        
+    
+    if(game_no == 50):
         pause = 0
+    elif(display == 1):
+        display = 0
+        print("Round no : "+ str( game_no + 1) + " Seekers req : "+ str(step))
+        game_no += 1
+        step = 0
+        hider_dots = []
+        for i in range(num_hiders):
+            hider_dots.append((random.randint(0+grid_margin, grid_width+grid_margin), random.randint(0+grid_margin, grid_height+grid_margin)))
+
 
     if(pause != 0):
         step += 1
@@ -293,27 +308,45 @@ while running:
     pygame.draw.rect(status_bar_bottom, strategic_point_color, (1100, 15,  obstacle_size*0.5, obstacle_size*0.5))
     screen.blit(bottom_text_4, (sb_bottom_x+ 1130, sb_bottom_y+ 10))
 
-    # Blit the text on the botton status bar
-    sb_right_x = grid_width*1.2
+    # Blit the text on the right status bar
+    sb_right_x = grid_width*1.5
     sb_right_y = top_status_bar_height+right_status_bar_margin//2
     screen.blit(status_bar_right, (sb_right_x, sb_right_y))
 
-    screen.blit(right_text_1, (sb_right_x + 20, sb_right_y + 10))
+    
+
+
+
+    t1 = font.render(":::::: Game Stats :::::: ", True, (255, 255, 255))
+    t2 = font.render("Grid Size : " + str(grid_height) + " x " + str(grid_width), True, (255, 255, 255))
+    t3 = font.render("Number of Hiders : " +str(num_hiders), True, (255, 255, 255))
+    t4 = font.render("Number of Obstacles : "+str(num_obstacles), True, (255, 255, 255))
+    t5 = font.render("Number of Strategic Points : " + str(num_obstacles*4), True, (255, 255, 255))
 
     right_text_2 = font.render("Active Seekers: " + str(len(seekers) - 4), True, (255, 255, 255))#small offset for extra seekers. ignored for now
-    screen.blit(right_text_2, (sb_right_x + 20, sb_right_y + 30))
-
     right_text_3 = font.render("Active Hiders: " + str(len(hider_dots)), True, (255, 255, 255)) 
-    screen.blit(right_text_3, (sb_right_x + 20, sb_right_y + 50))
-
     right_text_4 = font.render("Game Step: " + str(step), True, (255, 255, 255))
-    screen.blit(right_text_4, (sb_right_x + 20, sb_right_y + 70))
 
-    # Blit the text on the botton status bar
+  
+
+    screen.blit(t1, (sb_right_x + 170, sb_right_y + 30))
+    screen.blit(t2, (sb_right_x + 20, sb_right_y + 50))
+    screen.blit(t3, (sb_right_x + 20, sb_right_y + 70))
+    screen.blit(t4, (sb_right_x + 20, sb_right_y + 90))
+    screen.blit(t5, (sb_right_x + 20, sb_right_y + 110))
+    screen.blit(right_text_1, (sb_right_x + 20, sb_right_y + 130))
+
+    screen.blit(right_text_2, (sb_right_x + 20, sb_right_y + 200))
+    screen.blit(right_text_3, (sb_right_x + 20, sb_right_y + 220))
+    screen.blit(right_text_4, (sb_right_x + 20, sb_right_y + 240))
+
+    
+
+    # Blit the text on the top status bar
     screen.blit(top_text, (400,3))
 
     pygame.display.update()
-    # pygame.time.delay(10)
+    pygame.time.delay(10)
 
 # quit pygame
 pygame.quit()
